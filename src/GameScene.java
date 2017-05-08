@@ -18,7 +18,7 @@ public class GameScene extends Pane {
     private GraphicsContext gc = canvas.getGraphicsContext2D();
     private Point startingPoint;
     private Point lastPoint;
-    private boolean triangle, pentagon;
+    private boolean triangle, pentagon, rectangle;
     private int lastRoll = 0;
 
     GameScene() {
@@ -28,8 +28,8 @@ public class GameScene extends Pane {
         lastPoint = startingPoint;
 
         triangle = false;
-        pentagon = true;
-
+        pentagon = false;
+        rectangle = true;
 
         int numOfExecutors = 1000;
 
@@ -70,6 +70,23 @@ public class GameScene extends Pane {
                         points.add(lastPoint);
                         lastRoll = diceroll;
                         requestLayout();
+                    }else if(rectangle){
+                        diceroll = (int) (Math.random() * 4) + 1;
+
+                        drawPredefinedRectangle();
+                        if (diceroll <= 1 && diceroll != lastRoll)
+                            lastPoint = new Point(middlePoint(lastPoint, points.get(1)));
+                        else if ((diceroll > 1 && diceroll <= 2) && diceroll != lastRoll)
+                            lastPoint = new Point(middlePoint(lastPoint, points.get(2)));
+                        else if ((diceroll > 2 && diceroll <= 3) && diceroll != lastRoll)
+                            lastPoint = new Point(middlePoint(lastPoint, points.get(3)));
+                        else if ((diceroll > 3 && diceroll <= 4) && diceroll != lastRoll)
+                            lastPoint = new Point(middlePoint(lastPoint, points.get(4)));
+
+
+                        points.add(lastPoint);
+                        lastRoll = diceroll;
+                        requestLayout();
                     }
                 }
             }.start();
@@ -106,6 +123,14 @@ public class GameScene extends Pane {
         points.add(new Point(400, 20));
         points.add(new Point(20, 700));
         points.add(new Point(780, 700));
+        requestLayout();
+    }
+
+    private void drawPredefinedRectangle() {
+        points.add(new Point(400, 20));
+        points.add(new Point(20, 400));
+        points.add(new Point(400, 400));
+        points.add(new Point(20, 20));
         requestLayout();
     }
 
