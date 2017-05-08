@@ -13,7 +13,7 @@ import java.util.ConcurrentModificationException;
  */
 public class GameScene extends Pane {
     private ArrayList<Point> points = new ArrayList<>(0); //this array is representing all alive cells on board+
-    private int POINT_SIZE = 2;
+    private int POINT_SIZE = 1;
     private Canvas canvas = new Canvas(800, 600);
     private GraphicsContext gc = canvas.getGraphicsContext2D();
     private Point startingPoint;
@@ -30,8 +30,11 @@ public class GameScene extends Pane {
         triangle = false;
         pentagon = true;
 
-        Runnable run = () -> {
-           new AnimationTimer() {
+
+        int numOfExecutors = 1000;
+
+        for(int i = 0; i < numOfExecutors; i++){
+            new AnimationTimer() {
                 @Override
                 public void handle(long timestamp) {
                     int diceroll;
@@ -70,12 +73,6 @@ public class GameScene extends Pane {
                     }
                 }
             }.start();
-        };
-
-        int numOfExecutors = 2000;
-
-        for(int i = 0; i < numOfExecutors; i++){
-            new Thread(run).start();
         }
 
     }
@@ -106,9 +103,9 @@ public class GameScene extends Pane {
     }
 
     private void drawPredefinedTriangle() {
-        points.add(new Point(200, 10));
-        points.add(new Point(10, 350));
-        points.add(new Point(390, 350));
+        points.add(new Point(400, 20));
+        points.add(new Point(20, 700));
+        points.add(new Point(780, 700));
         requestLayout();
     }
 
